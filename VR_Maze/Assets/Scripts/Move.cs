@@ -6,7 +6,7 @@ public class Move : MonoBehaviour {
 
 	public CharacterController player;
 	public Camera camera = Camera.main;
-	//private Vector3 offset;
+	private Vector3 offset;
 
 	// Use this for initialization
 	void Start () {
@@ -20,13 +20,13 @@ public class Move : MonoBehaviour {
 		if (GvrController.IsTouching) {
 			Vector2 movement = GvrController.TouchPos;
 			Vector3 move3 = new Vector3 ((float)(movement.x - .5), 0, -1 * (float)(movement.y - .5));
-			Vector3 newmove = camera.transform.TransformDirection (move3);
-			transform.rotation = Quaternion.LookRotation(newmove);
+			Vector3 newmove = transform.rotation * move3;
+			//transform.rotation = Quaternion.LookRotation(newmove);
 			//Vector3 mod = move3.x * transform.forward + move3.z * transform.right;
 			//player.transform.Rotate (offset);
 
 			//player.transform.rotation = camera.transform.rotation;
-			player.Move (move3 * Time.deltaTime * 10);
+			player.Move (newmove * Time.deltaTime * 10);
 			/*Quaternion quat = transform.rotation;
 			Vector2 diference = new Vector2((quat.x - move3.x), (quat.z - move3.z));
 			float sign = (quat.z < move3.z)? -1.0f : 1.0f;
